@@ -15,12 +15,23 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import TablesProjectRow from "components/Tables/TablesProjectRow";
 import TablesTableRow from "components/Tables/TablesTableRow";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { tablesProjectData, tablesTableData } from "variables/general";
+import { getAllLoaiPhong } from '../../apis/LoaiPhongApi/LoaiPhong'
 
 function Tables() {
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+  const [LoaiPhongs, setLoaiLoaiPhong] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllLoaiPhong();
+      setLoaiLoaiPhong(data)
+    }
+    fetchData()
+  }, [])
+
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -35,27 +46,28 @@ function Tables() {
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400" >
                 <Th pl="0px" borderColor={borderColor} color="gray.400" >
-                  Author
+                  Ma
                 </Th>
-                <Th borderColor={borderColor} color="gray.400" >Function</Th>
-                <Th borderColor={borderColor} color="gray.400" >Status</Th>
-                <Th borderColor={borderColor} color="gray.400" >Employed</Th>
+                <Th borderColor={borderColor} color="gray.400" >Tên loại phòng</Th>
+                <Th borderColor={borderColor} color="gray.400" >Dien tich</Th>
+                <Th borderColor={borderColor} color="gray.400" >Gia</Th>
+                <Th borderColor={borderColor} color="gray.400" >Hình</Th>
+                <Th borderColor={borderColor} color="gray.400" >Số lượng</Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
             </Thead>
             <Tbody>
-              {tablesTableData.map((row, index, arr) => {
+              {LoaiPhongs.map((loaiPhong, index, arr) => {
                 return (
                   <TablesTableRow
-                    name={row.name}
-                    logo={row.logo}
-                    email={row.email}
-                    subdomain={row.subdomain}
-                    domain={row.domain}
-                    status={row.status}
-                    date={row.date}
+                    maLoaiPhong={loaiPhong.maLoaiPhong}
+                    tenLoaiPhong={loaiPhong.tenLoaiPhong}
+                    soLuong={loaiPhong.soLuong}
+                    hinh={loaiPhong.hinh}
+                    gia={loaiPhong.gia}
+                    dienTich={loaiPhong.dienTich}
                     isLast={index === arr.length - 1 ? true : false}
-                    key={index}
+                    key={loaiPhong.maLoaiPhong}
                   />
                 );
               })}
