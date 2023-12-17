@@ -1,9 +1,10 @@
 // import
-import React, { Component }  from 'react';
+import Re_sonuocact, { Component }  from 'react';
 import Dashboard from "views/Dashboard/Dashboard.js";
-import Tables from "views/Dashboard/Tables.js";
-import Billing from "views/Dashboard/Billing.js";
-import RTLPage from "views/RTL/RTLPage.js";
+import LoaiPhong from "views/Dashboard/LoaiPhong.js";
+import Phong from "views/Dashboard/Phong.js";
+import SoDien from "views/Dashboard/SoDien.js";
+import TienIch from "views/Dashboard/TienIch";
 import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
@@ -15,7 +16,6 @@ import {
   PersonIcon,
   DocumentIcon,
   RocketIcon,
-  SupportIcon,
 } from "components/Icons/Icons";
 
 var dashRoutes = [
@@ -28,28 +28,44 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/tables",
-    name: "Tables",
+    path: "/phong",
+    name: "Phòng",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color='inherit' />,
-    component: Tables,
+    component: Phong,
     layout: "/admin",
   },
   {
-    path: "/billing",
-    name: "Billing",
+    path: "/loaiphong",
+    name: "Loai Phong",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color='inherit' />,
+    component: LoaiPhong,
+    layout: "/admin",
+  },
+  {
+    path: "/sodien_sonuoc",
+    name: "Số điện số nước",
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
-    component: Billing,
+    component: SoDien,
     layout: "/admin",
   },
   {
-    path: "/rtl-support-page",
-    name: "RTL",
-    rtlName: "آرتيإل",
-    icon: <SupportIcon color='inherit' />,
-    component: RTLPage,
-    layout: "/rtl",
+    path: "/tienich",
+    name: "Tiện ích",
+    rtlName: "لوحة القيادة",
+    icon: <CreditIcon color='inherit' />,
+    component: TienIch,
+    layout: "/admin",
+  },
+  {
+    path: "/phieu_thue_tien",
+    name: "Tiện ích",
+    rtlName: "لوحة القيادة",
+    icon: <CreditIcon color='inherit' />,
+    component: TienIch,
+    layout: "/admin",
   },
   {
     name: "ACCOUNT PAGES",

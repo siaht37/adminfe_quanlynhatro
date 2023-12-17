@@ -19,9 +19,9 @@ import CardHeader from "components/Card/CardHeader.js";
 import IconBox from "components/Icons/IconBox";
 import { MastercardIcon, VisaIcon } from "components/Icons/Icons";
 import { HSeparator } from "components/Separator/Separator";
-import BillingRow from "components/Tables/BillingRow";
-import InvoicesRow from "components/Tables/InvoicesRow";
-import TransactionRow from "components/Tables/TransactionRow";
+import BillingRow from "components/LoaiPhong/BillingRow";
+import InvoicesRow from "components/LoaiPhong/InvoicesRow";
+import TransactionRow from "components/LoaiPhong/TransactionRow";
 import React from "react";
 import {
   FaPaypal,
