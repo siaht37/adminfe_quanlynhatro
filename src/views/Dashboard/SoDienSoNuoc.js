@@ -25,6 +25,7 @@ import {
   createSoDien,
   createSoNuoc,
 } from "../../apis";
+import { uniqueDates } from "utils";
 
 function SoDienSoNuoc() {
   const textColor = useColorModeValue("gray.700", "white");
@@ -35,37 +36,37 @@ function SoDienSoNuoc() {
   const [phongs, setPhongs] = useState([]);
   const [count, setCount] = useState(0);
   const [roomId, setRoomId] = useState();
-
+  const [roomIdFilter, setRoomIdFilter] = useState();
+  const [dateFilter, setDateFilter] = useState();
+  const [search, setSearch] = useState([]);
   const fetchData = async () => {
     const data = isTab ? await getAllSoDien() : await getAllSoNuoc();
     setSoDienNuoc(data);
   };
 
+  const fetchDataRoom = async () => {
+    const data = await getAllRoom();
+    setPhongs(data);
+  };
+
   useEffect(() => {
     fetchData();
-  }, [isTab]);
+    fetchDataRoom();
+  }, []);
 
-  const handleCreate = useCallback(() => {
+  const handleShowModal = useCallback(() => {
     //true => create dien
     //false => create nuoc
     setShowModal(true);
-    const fetchDataRoom = async () => {
-      const data = await getAllRoom();
-      setPhongs(data);
-    };
-
-    fetchDataRoom();
   }, [isTab]);
 
   const handleCreateDienNuoc = useCallback(async () => {
-    console.log(soDienNuoc, roomId, count);
     if (!roomId) {
       return;
     }
     if (isTab) {
       //so dien
       const data = await createSoDien(Number(roomId), Number(count));
-      console.log(data);
       if (data) {
         setSoDienNuoc((state) => {
           const newState = [...state];
@@ -86,6 +87,26 @@ function SoDienSoNuoc() {
     setShowModal(false);
   }, [isTab, roomId, count]);
 
+  const handleFilter = useCallback(() => {
+    console.log(roomIdFilter, dateFilter);
+    if (!roomIdFilter && !dateFilter) {
+      return;
+    }
+    const data = soDienNuoc.filter((checkData) => {
+      const checkDate =
+        new Date(checkData.ngayNhap).getMonth() + 1 ===
+          new Date(dateFilter).getMonth() + 1 &&
+        new Date(checkData.ngayNhap).getFullYear() ===
+          new Date(dateFilter).getFullYear();
+      const checkRoom = checkData.phong.maPhong === Number(roomIdFilter);
+      return checkDate || checkRoom;
+    });
+    setSearch(data);
+  }, [roomIdFilter, dateFilter]);
+
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
   return (
     <Flex
       position={"relative"}
@@ -122,63 +143,54 @@ function SoDienSoNuoc() {
               width={"400px"}
               margin={"0 auto"}
             >
-              {
-                //tên phòng
-                //call api nhét vô select option
-                <>
-                  <Flex direction={"row"} alignItems={"center"}>
-                    <label style={{ width: "200px" }} htmlFor="phong">
-                      Chọn phòng
-                    </label>
-                    <Select
-                      onChange={(e) => setRoomId(e.target.value)}
-                      id="phong"
-                      flex={1}
-                      marginTop={"12px"}
-                      placeholder="Chọn phòng"
-                    >
-                      {phongs
-                        .filter((phong) => !phong.conTrong)
-                        .map((phong) => (
-                          <option key={phong.maPhong} value={phong.maPhong}>
-                            {phong.maPhong}
-                          </option>
-                        ))}
-                    </Select>
-                  </Flex>
-                  <Flex>
-                    <label htmlFor="so" style={{ width: "200px" }}>
-                      Nhập {isTab ? "số điện" : "số nước"}
-                    </label>
-                    <input
-                      id="so"
-                      style={{ flex: 1 }}
-                      onChange={(e) => {
-                        if (e.target.value >= 0) {
-                          setCount(e.target.value);
-                        }
-                      }}
-                      type="number"
-                      value={count}
-                      min={0}
-                    />
-                  </Flex>
-                  <Flex>
-                    <label style={{ width: "200px" }}>Giá: </label>
-                    <input value={"3.500 VNĐ"} disabled />
-                  </Flex>
-                  <Button
-                    onClick={handleCreateDienNuoc}
-                    width={"fit-content"}
-                    margin={"12px auto"}
-                  >
-                    Thêm
-                  </Button>
-                </>
-                //Giá show 3k5 VNĐ
-                //button create
-                //call api set state
-              }
+              <Flex direction={"row"} alignItems={"center"}>
+                <label style={{ width: "200px" }} htmlFor="phong">
+                  Chọn phòng
+                </label>
+                <Select
+                  onChange={(e) => setRoomId(e.target.value)}
+                  id="phong"
+                  flex={1}
+                  marginTop={"12px"}
+                  placeholder="Chọn phòng"
+                >
+                  {phongs
+                    .filter((phong) => !phong.conTrong)
+                    .map((phong) => (
+                      <option key={phong.maPhong} value={phong.maPhong}>
+                        {phong.maPhong}
+                      </option>
+                    ))}
+                </Select>
+              </Flex>
+              <Flex>
+                <label htmlFor="so" style={{ width: "200px" }}>
+                  Nhập {isTab ? "số điện" : "số nước"}
+                </label>
+                <input
+                  id="so"
+                  style={{ flex: 1 }}
+                  onChange={(e) => {
+                    if (e.target.value >= 0) {
+                      setCount(e.target.value);
+                    }
+                  }}
+                  type="number"
+                  value={count}
+                  min={0}
+                />
+              </Flex>
+              <Flex>
+                <label style={{ width: "200px" }}>Giá: </label>
+                <input value={"3.500 VNĐ"} disabled />
+              </Flex>
+              <Button
+                onClick={handleCreateDienNuoc}
+                width={"fit-content"}
+                margin={"12px auto"}
+              >
+                Thêm
+              </Button>
             </Flex>
           </Flex>
         </Flex>
@@ -188,10 +200,50 @@ function SoDienSoNuoc() {
             colorScheme={"blue"}
             width={"fit-content"}
             marginLeft={"40px"}
-            onClick={handleCreate}
+            onClick={handleShowModal}
           >
             {!isTab ? "Tạo số nước" : "Tạo số điiện"}
           </Button>
+
+          <Flex>
+            <Select
+              onChange={(e) => setRoomIdFilter(e.target.value)}
+              flex={1}
+              marginTop={"12px"}
+              placeholder="Chọn phòng"
+            >
+              {phongs
+                .filter((phong) =>
+                  soDienNuoc.find((p) => p.phong.maPhong === phong.maPhong)
+                )
+                .map((phong) => (
+                  <option key={phong.maPhong} value={phong.maPhong}>
+                    {phong.maPhong}
+                  </option>
+                ))}
+            </Select>
+
+            <Select
+              onChange={(e) => setDateFilter(e.target.value)}
+              flex={1}
+              marginTop={"12px"}
+              placeholder="Chọn tháng, năm"
+            >
+              {uniqueDates(soDienNuoc.map((so) => so.ngayNhap)).map(
+                (so, index) => {
+                  return (
+                    <option key={index} value={so}>
+                      {`${new Date(so).getMonth() + 1} - ${new Date(
+                        so
+                      ).getFullYear()}`}
+                    </option>
+                  );
+                }
+              )}
+            </Select>
+
+            <Button onClick={handleFilter}>Lọc</Button>
+          </Flex>
 
           <Flex margin={"0 12px"} direction={"row"}>
             <Flex
@@ -301,22 +353,39 @@ function SoDienSoNuoc() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {soDienNuoc.map((soDienNuoc, index, arr) => {
-                      return (
-                        <TablesTableRow
-                          maPhong={soDienNuoc.phong.maPhong}
-                          ngayNhap={soDienNuoc.ngayNhap}
-                          so={soDienNuoc.so}
-                          donGia={soDienNuoc.donGia}
-                          isLast={index === arr.length - 1 ? true : false}
-                          key={
-                            soDienNuoc.phong.maPhong +
-                            Math.round(index * arr.length) +
-                            index
-                          }
-                        />
-                      );
-                    })}
+                    {search.length === 0
+                      ? soDienNuoc.map((soDienNuoc, index, arr) => {
+                          return (
+                            <TablesTableRow
+                              maPhong={soDienNuoc.phong.maPhong}
+                              ngayNhap={soDienNuoc.ngayNhap}
+                              so={soDienNuoc.so}
+                              donGia={soDienNuoc.donGia}
+                              isLast={index === arr.length - 1 ? true : false}
+                              key={
+                                soDienNuoc.phong.maPhong +
+                                Math.round(index * arr.length) +
+                                index
+                              }
+                            />
+                          );
+                        })
+                      : search.map((soDienNuoc, index, arr) => {
+                          return (
+                            <TablesTableRow
+                              maPhong={soDienNuoc.phong.maPhong}
+                              ngayNhap={soDienNuoc.ngayNhap}
+                              so={soDienNuoc.so}
+                              donGia={soDienNuoc.donGia}
+                              isLast={index === arr.length - 1 ? true : false}
+                              key={
+                                soDienNuoc.phong.maPhong +
+                                Math.round(index * arr.length) +
+                                index
+                              }
+                            />
+                          );
+                        })}
                   </Tbody>
                 </Table>
               </Flex>

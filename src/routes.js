@@ -68,6 +68,7 @@ var dashRoutes = [
     component: HopDong,
     layout: "/admin",
   },
+  
   {
     name: "ACCOUNT PAGES",
     category: "account",
