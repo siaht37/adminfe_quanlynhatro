@@ -1,10 +1,4 @@
-import {
-  Image,
-  Td,
-  Text,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Image, Td, Text, Tr, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 
 function TablesTableRow(props) {
@@ -71,7 +65,7 @@ function TablesTableRow(props) {
           fontWeight="bold"
           minWidth="100%"
         >
-          {maLoaiPhong}
+          {dienTich}
         </Text>
       </Td>
       <Td
@@ -100,13 +94,17 @@ function TablesTableRow(props) {
         <Image
           margin={"0 auto"}
           height={"100px"}
-          src="	https://picsum.photos/400/400"
+          src={`${process.env.REACT_APP_QUAN_LY_NHA_TRO}/${hinh}`}
         />
       </Td>
 
-      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+      <Td
+        textAlign={"center"}
+        borderColor={borderColor}
+        borderBottom={isLast ? "none" : null}
+      >
         <Text fontSize="md" color={textColor} fontWeight="bold">
-          {dienTich}
+          {soLuong}
         </Text>
       </Td>
     </Tr>

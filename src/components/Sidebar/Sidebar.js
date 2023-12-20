@@ -14,7 +14,7 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
 import {
@@ -23,15 +23,13 @@ import {
   renderTrack,
   renderTrackRTL,
   renderView,
-  renderViewRTL
+  renderViewRTL,
 } from "components/Scrollbar/Scrollbar";
 import { HSeparator } from "components/Separator/Separator";
 import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink, useLocation } from "react-router-dom";
-
-
 
 // FUNCTIONS
 
@@ -64,7 +62,7 @@ function Sidebar(props) {
         var st = {};
         st[prop["state"]] = !state[prop.state];
         return (
-          <>
+          <React.Fragment key={key}>
             <Text
               color={activeColor}
               fontWeight="bold"
@@ -83,7 +81,7 @@ function Sidebar(props) {
                 : prop.name}
             </Text>
             {createLinks(prop.views)}
-          </>
+          </React.Fragment>
         );
       }
       return (
@@ -298,7 +296,7 @@ export function SidebarResponsive(props) {
         var st = {};
         st[prop["state"]] = !state[prop.state];
         return (
-          <>
+          <React.Fragment key={key}>
             <Text
               color={activeColor}
               fontWeight="bold"
@@ -317,7 +315,7 @@ export function SidebarResponsive(props) {
                 : prop.name}
             </Text>
             {createLinks(prop.views)}
-          </>
+          </React.Fragment>
         );
       }
       return (

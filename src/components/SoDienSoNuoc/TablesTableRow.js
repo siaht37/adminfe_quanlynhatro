@@ -5,11 +5,8 @@ import moment from "moment";
 function TablesTableRow(props) {
   const { maPhong, ngayNhap, so, donGia, isLast } = props;
 
-  const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
-  const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-
   return (
     <Tr>
       <Td
