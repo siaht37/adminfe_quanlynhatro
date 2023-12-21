@@ -5,3 +5,4 @@ export * from "./SoNuoc";
 export * from "./TienIch";
 export * from './PhieuThueTienIch'
 export * from './HopDongThuePhong'
+export * from './HoaDonHangThang'

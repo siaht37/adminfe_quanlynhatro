@@ -6,6 +6,7 @@ import Phong from "views/Dashboard/Phong.js";
 import SoDienSoNuoc from "views/Dashboard/SoDienSoNuoc.js";
 import TienIch from "views/Dashboard/TienIch";
 import HopDong from "views/Dashboard/HopDong";
+import HoaDon from "views/Dashboard/HoaDon";
 import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
@@ -68,7 +69,14 @@ var dashRoutes = [
     component: HopDong,
     layout: "/admin",
   },
-  
+  {
+    path: "/hoa-don",
+    name: "Hóa đơn",
+    rtlName: "لوحة القيادة",
+    icon: <CreditIcon color="inherit" />,
+    component: HoaDon,
+    layout: "/admin",
+  },
   {
     name: "ACCOUNT PAGES",
     category: "account",

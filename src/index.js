@@ -25,6 +25,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 // Custom Chakra theme
 import theme from "theme/theme.js";
 
+//Page custom
+// import TaoHoaDonTheoThang from "views/Dashboard/";
+
 ReactDOM.render(
   <ChakraProvider theme={theme} resetCss={false} position="relative">
     <HashRouter>
